@@ -12,7 +12,8 @@ dotfiles/
 ├── git/
 │   └── gitconfig
 ├── claude/
-│   └── settings.json
+│   ├── settings.json
+│   └── skills/         (see skills/CREDITS.md for attribution)
 ├── aerospace/
 │   └── aerospace.toml
 ├── tool-versions
@@ -32,8 +33,14 @@ cd ~/projects/projects/dotfiles
 ## Adding a new file
 
 1. Move the real file into the appropriate topic folder here (create one if needed).
-2. Add an entry to the `LINKS` map in `install.sh`.
+2. Add an entry to the `SOURCES`/`TARGETS` arrays in `install.sh` (same index in both).
 3. Re-run `./install.sh`.
+
+## Credits
+
+Some of the Claude Code skills under `claude/skills/` were written by other
+people and adapted here — see [claude/skills/CREDITS.md](claude/skills/CREDITS.md)
+for the full list and links to the originals.
 
 ## Notes
 
