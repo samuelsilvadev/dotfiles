@@ -30,6 +30,8 @@ cd ~/projects/projects/dotfiles
 
 `install.sh` symlinks each file into place under `$HOME`. If something already exists there and isn't already a symlink, it's backed up first (`<file>.backup.<timestamp>`) rather than overwritten.
 
+If `../dotfiles-private` exists next to this repo, `install.sh` runs its `install.sh` too, at the end. That repo is private/company-specific config (not published here) — see [dotfiles-private](https://github.com/<you>/dotfiles-private). Cloning just this repo works fine without it.
+
 ## Adding a new file
 
 1. Move the real file into the appropriate topic folder here (create one if needed).

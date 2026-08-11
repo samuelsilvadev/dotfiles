@@ -39,8 +39,21 @@ for i in "${!SOURCES[@]}"; do
     mv "$target" "$backup"
   fi
 
-  ln -sf "$source_path" "$target"
+  # -n keeps ln from treating an existing symlinked *directory* target as a
+  # place to put the new link inside, which would nest a self-referential
+  # symlink instead of replacing it.
+  ln -sfn "$source_path" "$target"
   echo "Linked $target -> $source_path"
 done
 
 echo "Done."
+
+# Optional: company/work-specific config that doesn't belong in this public
+# repo. Only runs if that sibling repo actually exists - a plain clone of
+# this repo works fine without it.
+PRIVATE_INSTALL="$DOTFILES_DIR/../dotfiles-private/install.sh"
+if [ -f "$PRIVATE_INSTALL" ]; then
+  echo ""
+  echo "Found dotfiles-private, running its install.sh too..."
+  "$PRIVATE_INSTALL"
+fi

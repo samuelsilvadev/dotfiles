@@ -128,3 +128,7 @@ eval "$(zoxide init zsh)"
 # --disable-up-arrow keeps plain up-arrow scrolling through recent history
 # instead of opening atuin's full-screen search.
 eval "$(atuin init zsh --disable-up-arrow)"
+
+# ---------- Local/work overrides (not tracked here) ----------
+# See ~/projects/projects/dotfiles-private for company-specific config.
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
