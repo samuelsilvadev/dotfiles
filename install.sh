@@ -15,6 +15,7 @@ SOURCES=(
   "aerospace/aerospace.toml"
   "claude/settings.json"
   "claude/skills"
+  "ghostty"
 )
 
 # corresponding $HOME targets, same order as SOURCES
@@ -26,6 +27,7 @@ TARGETS=(
   "$HOME/.aerospace.toml"
   "$HOME/.claude/settings.json"
   "$HOME/.claude/skills"
+  "$HOME/.config/ghostty"
 )
 
 for i in "${!SOURCES[@]}"; do

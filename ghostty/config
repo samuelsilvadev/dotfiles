@@ -1,0 +1,64 @@
+# Ghostty config — ~/.config/ghostty/config
+# Reload without restarting: cmd+shift+,
+# See every option + default: ghostty +show-config --default --docs
+
+# ---------- Appearance ----------
+# Auto-switches with macOS light/dark mode. Browse with: ghostty +list-themes
+theme = Dracula
+
+# Ghostty bundles JetBrains Mono with Nerd Font symbols patched in,
+# so starship/eza/lazygit icons work out of the box.
+font-size = 14
+font-thicken = true
+adjust-cell-height = 12%
+
+# Slight transparency. Set both to 1/0 if you find it distracting.
+background-opacity = 0.96
+background-blur-radius = 20
+
+window-padding-x = 10
+window-padding-y = 8
+window-padding-balance = true
+macos-titlebar-style = tabs
+window-save-state = always
+
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+unfocused-split-opacity = 0.85
+
+# Dim + desaturate the terminal when the window loses focus, so focused vs.
+# unfocused is obvious under AeroSpace (which often leaves the cursor hollow
+# with no other cue). Path is relative to this config file.
+# 'always' lets the focus-return fade finish even though unfocused surfaces
+# render fewer frames.
+custom-shader = shaders/focus-dim.glsl
+custom-shader-animation = always
+
+# ---------- Behaviour ----------
+scrollback-limit = 100000
+copy-on-select = clipboard
+confirm-close-surface = true
+shell-integration-features = cursor,sudo,title
+# makes opt+left/right jump words in zsh
+macos-option-as-alt = true
+auto-update = check
+
+# ---------- Keybinds ----------
+# Splits (tmux-free for quick side-by-side work)
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+keybind = super+alt+left=goto_split:left
+keybind = super+alt+right=goto_split:right
+keybind = super+alt+up=goto_split:up
+keybind = super+alt+down=goto_split:down
+keybind = super+shift+enter=toggle_split_zoom
+
+# Drop-down terminal from anywhere in macOS, even when Ghostty isn't focused
+keybind = global:super+backquote=toggle_quick_terminal
+
+# Jump to the previous prompt (needs shell integration — already on for zsh)
+keybind = super+up=jump_to_prompt:-1
+keybind = super+down=jump_to_prompt:1
+
+keybind = super+k=clear_screen

@@ -70,12 +70,19 @@ alias lzd="lazydocker"
 alias pn="pnpm"
 alias gpcb="git branch --show-current"
 
-# eza (modern ls) + bat (modern cat)
-alias ls="eza --group-directories-first --icons=auto"
-alias ll="eza -l --group-directories-first --icons=auto --git"
-alias la="eza -la --group-directories-first --icons=auto --git"
-alias lt="eza --tree --level=2 --icons=auto"
+# eza (modern ls) + bat (modern cat). --hyperlink makes filenames cmd-clickable.
+alias ls="eza --group-directories-first --icons=auto --hyperlink"
+alias ll="eza -l --group-directories-first --icons=auto --git --hyperlink"
+alias la="eza -la --group-directories-first --icons=auto --git --hyperlink"
+alias lt="eza --tree --level=2 --icons=auto --hyperlink"
 alias cat="bat"
+
+# quick opener: `c file[:line]` opens Cursor at that spot from the terminal
+c() { cursor --goto "$@" 2>/dev/null || cursor "$@"; }
+
+# ripgrep: emit Ghostty cmd-clickable Cursor links in results (see ripgreprc).
+# rg 15+ renamed this from RIPGREP_CONFIG_FILE to RIPGREP_CONFIG_PATH.
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
 # ---------- Prompt ----------
 eval "$(starship init zsh)"
