@@ -5,11 +5,12 @@
       "Bash(npx jest:*)"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "model": "fable[1m]",
   "hooks": {},
   "enabledPlugins": {
     "ruby-lsp@claude-plugins-official": true,
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -22,10 +23,5 @@
   "effortLevel": "low",
   "theme": "light",
   "voiceEnabled": false,
-  "mcpServers": {
-    "figma": {
-      "type": "http",
-      "url": "http://127.0.0.1:3845/mcp"
-    }
-  }
+  "mcpServers": {}
 }
