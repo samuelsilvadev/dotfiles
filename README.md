@@ -13,7 +13,7 @@ dotfiles/
 │   └── gitconfig
 ├── claude/
 │   ├── settings.json
-│   └── skills/         (see skills/CREDITS.md for attribution)
+│   └── skills/         (linked to ~/.claude/skills and ~/.agents/skills; see skills/CREDITS.md)
 ├── aerospace/
 │   └── aerospace.toml
 ├── tool-versions
@@ -37,6 +37,13 @@ If `../dotfiles-private` exists next to this repo, `install.sh` runs its `instal
 1. Move the real file into the appropriate topic folder here (create one if needed).
 2. Add an entry to the `SOURCES`/`TARGETS` arrays in `install.sh` (same index in both).
 3. Re-run `./install.sh`.
+
+## Skills
+
+`claude/skills/` is linked to both `~/.claude/skills` (Claude Code) and
+`~/.agents/skills` (Codex and other agents that use the shared `~/.agents`
+location), so a skill added here shows up in both. Skills installed with
+`npx skills add -g` land in this folder too, through the link.
 
 ## Credits
 

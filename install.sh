@@ -15,6 +15,7 @@ SOURCES=(
   "aerospace/aerospace.toml"
   "claude/settings.json"
   "claude/skills"
+  "claude/skills"
   "ghostty"
 )
 
@@ -27,6 +28,7 @@ TARGETS=(
   "$HOME/.aerospace.toml"
   "$HOME/.claude/settings.json"
   "$HOME/.claude/skills"
+  "$HOME/.agents/skills"   # same skills, for Codex (and other agents that read ~/.agents)
   "$HOME/.config/ghostty"
 )
 
