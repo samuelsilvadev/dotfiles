@@ -1,6 +1,11 @@
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# ~/.local/bin (claude, uv, etc.) must be on PATH for login shells too, not
+# just interactive ones: GUI apps like T3 Code resolve PATH via a non-interactive
+# `zsh -lc`, which reads .zprofile but skips .zshrc.
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
