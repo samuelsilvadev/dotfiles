@@ -1,0 +1,3 @@
+interface:
+  display_name: "Create PR"
+  short_description: "Open a draft pull request with a concise, conventions-following body"
