@@ -7,6 +7,10 @@
   },
   "model": "fable[1m]",
   "hooks": {},
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "enabledPlugins": {
     "ruby-lsp@claude-plugins-official": true,
     "slack@claude-plugins-official": true,
