@@ -63,7 +63,14 @@ if command -v brew >/dev/null 2>&1; then
   # the Brewfile needs (individual entries), not whole taps.
   echo "Trusting third-party taps..."
   brew trust --cask nikitabobko/tap/aerospace
+  brew trust --cask anomalyco/tap/hex
   brew trust --formula derailed/k9s/k9s
+  brew trust --formula danerwilliams/tap/charcoal
+  brew trust --formula supabase/tap/supabase
+  brew trust --formula pulumi/tap/pulumi
+  brew trust --formula stripe/stripe-cli/stripe
+  brew trust --formula tursodatabase/tap/turso
+  brew trust --formula libsql/sqld/sqld
 
   echo "Installing Homebrew packages..."
   brew bundle --file="$DOTFILES_DIR/Brewfile"

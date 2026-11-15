@@ -107,19 +107,19 @@ export PGGSSENCMODE="disable"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # ---------- bun ----------
+# bun itself comes from Homebrew; BUN_INSTALL is only where `bun add -g` keeps
+# global packages, so its bin dir goes last and never shadows brew's bun.
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+export PATH="$PATH:$BUN_INSTALL/bin"
 
-# ---------- Google Cloud SDK ----------
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+# ---------- Google Cloud SDK (cask gcloud-cli) ----------
+# path.zsh.inc also puts gke-gcloud-auth-plugin on PATH, which kubectl needs.
+GCLOUD_SDK="/opt/homebrew/share/google-cloud-sdk"
+if [ -f "$GCLOUD_SDK/path.zsh.inc" ]; then . "$GCLOUD_SDK/path.zsh.inc"; fi
+if [ -f "$GCLOUD_SDK/completion.zsh.inc" ]; then . "$GCLOUD_SDK/completion.zsh.inc"; fi
 
 # ---------- ~/.local/bin (claude, uv, etc.) ----------
 . "$HOME/.local/bin/env"
-
-# ---------- opencode ----------
-export PATH="$HOME/.opencode/bin:$PATH"
 
 # ---------- Runtimes (mise) ----------
 # Keep this after every other PATH change so mise-managed tools win.

@@ -66,6 +66,19 @@ else
   fail "zsh/zshrc uses commands no Brewfile/tool-versions entry provides:$missing_cmds"
 fi
 
+# 5. Homebrew keg paths in the shell files (/opt/homebrew/opt/<formula>/...)
+#    must name a formula the Brewfile installs.
+kegs="$(sed -nE 's|.*/opt/homebrew/opt/([A-Za-z0-9@._+-]+)/.*|\1|p' zsh/zshrc zsh/zprofile | sort -u)"
+missing_kegs=""
+for keg in $kegs; do
+  printf '%s\n' "$provided" | grep -qx "$keg" || missing_kegs="$missing_kegs $keg"
+done
+if [ -z "$missing_kegs" ]; then
+  pass "every /opt/homebrew/opt path in the shell files is in the Brewfile"
+else
+  fail "shell files reference Homebrew kegs the Brewfile does not install:$missing_kegs"
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed." >&2
   exit 1

@@ -4,6 +4,13 @@
 # ---------- Taps ----------
 tap "nikitabobko/tap"   # aerospace
 tap "derailed/k9s"      # k9s
+tap "danerwilliams/tap" # charcoal
+tap "supabase/tap"      # supabase
+tap "pulumi/tap"        # pulumi
+tap "stripe/stripe-cli" # stripe
+tap "tursodatabase/tap" # turso
+tap "libsql/sqld"       # sqld
+tap "anomalyco/tap"     # hex
 
 # ---------- Core ----------
 brew "git"           # newer than Apple's; git/gitconfig is linked by install.sh
@@ -26,12 +33,52 @@ brew "lazygit"
 brew "lazydocker"
 brew "derailed/k9s/k9s"   # kubernetes TUI (third-party tap, trusted in install.sh)
 
+# ---------- Terminal tools ----------
+brew "tmux"
+brew "htop"
+brew "btop"
+brew "wget"
+brew "gnupg"
+brew "gnu-tar"
+brew "superfile"     # terminal file manager
+brew "mole"          # mac cleanup
+
+# ---------- Dev tools ----------
+brew "gh"
+brew "kubernetes-cli"
+brew "kind"
+brew "podman-compose"
+brew "mkcert"
+brew "sops"
+brew "protobuf"
+brew "redis"
+brew "rust"
+brew "cocoapods"
+brew "flyctl"
+brew "watchman"
+brew "websocat"
+brew "ffmpeg"
+
+# ---------- Runtimes / CLIs that used to come from install scripts ----------
+brew "bun"           # BUN_INSTALL=~/.bun still holds global packages (zshrc)
+brew "uv"
+brew "opencode"
+
+# ---------- Third-party taps (trusted in install.sh) ----------
+brew "danerwilliams/tap/charcoal"
+brew "supabase/tap/supabase"
+brew "pulumi/tap/pulumi"
+brew "stripe/stripe-cli/stripe"
+brew "tursodatabase/tap/turso"
+brew "libsql/sqld/sqld"
+
 # ---------- Ruby build deps (mise compiles Ruby from source) ----------
 brew "openssl@3"
 brew "libyaml"
 
-# ---------- Postgres client (PATH set in zshrc) ----------
+# ---------- Postgres (PATH set in zshrc) ----------
 brew "libpq"
+brew "postgresql@18"
 
 # ---------- GUI apps ----------
 # adopt: true takes over an app already in /Applications (installed outside
@@ -49,3 +96,8 @@ cask "ghostty", args: { adopt: true }
 cask "aerospace"
 cask "cursor", args: { adopt: true }
 cask "font-fira-code-nerd-font"   # icons for starship/eza/lazygit (ghostty/config)
+cask "gcloud-cli"    # path/completion sourced in zshrc
+cask "orbstack"      # docker/linux VMs (zprofile sources its shell init)
+cask "ngrok"
+cask "keycastr"
+cask "anomalyco/tap/hex"
