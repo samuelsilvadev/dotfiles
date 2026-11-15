@@ -46,6 +46,9 @@ Use this when the ticket already exists (often written by a PM) and the user giv
 
 * **Show every Linear write as a draft first** (new issue, description edit, document, comment) and wait for approval, even when the user says "post it". Status changes and adding PR links to a plan you own don't need a draft.
 * **Research before writing.** Read the code, check production data read-only, and answer questions yourself. Only genuine judgment calls go to the user or to "Open questions".
+* **Read designs and large records cheaply:**
+  * Figma: map the frames with `get_metadata` first, then screenshot only the frames the spec needs, once each, at a reduced scale.
+  * Linear: when a read is too big and gets saved to a file, search that file (`grep`, or `python3 -I` for JSON). Repeating the call overflows again.
 * **Every decision is written down before the turn ends.** Product decisions go on the ticket, implementation decisions on the plan (see "Where decisions live"). If the user declines to record something, respect that.
 * **Writing style:** plain headline plus sub-bullets, short sentences, the same term for the same thing throughout. Code and file references only on a trailing `Where:` line. One issue ID per line (Linear renders IDs as full-title chips). Dependencies by step number. Sizes as XS (hours), S (a day), M (2 to 3 days), L (1 to 2 weeks), XL (more), never eng-weeks. No em dashes.
 * **Disclaimer:** start every Claude-written description, document and comment with `> Written by Claude, reviewed by <name>.` (or `pending <name>'s review` for a plan not yet approved).
