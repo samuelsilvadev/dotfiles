@@ -17,6 +17,7 @@ SOURCES=(
   "claude/skills"
   "claude/skills"
   "ghostty"
+  "mise/config.toml"
 )
 
 # corresponding $HOME targets, same order as SOURCES
@@ -30,6 +31,7 @@ TARGETS=(
   "$HOME/.claude/skills"
   "$HOME/.agents/skills"   # same skills, for Codex (and other agents that read ~/.agents)
   "$HOME/.config/ghostty"
+  "$HOME/.config/mise/config.toml"
 )
 
 for i in "${!SOURCES[@]}"; do
@@ -51,6 +53,25 @@ for i in "${!SOURCES[@]}"; do
 done
 
 echo "Done."
+
+# Packages: system layer via Homebrew, language runtimes via mise.
+if command -v brew >/dev/null 2>&1; then
+  # Third-party tap casks/formulae are ignored until trusted. Trust only what
+  # the Brewfile needs (individual entries), not whole taps.
+  echo "Trusting third-party taps..."
+  brew trust --cask nikitabobko/tap/aerospace
+  brew trust --formula derailed/k9s/k9s
+
+  echo "Installing Homebrew packages..."
+  brew bundle --file="$DOTFILES_DIR/Brewfile"
+else
+  echo "Homebrew not found; skipping Brewfile (https://brew.sh)."
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  echo "Installing runtimes from ~/.tool-versions with mise..."
+  mise install
+fi
 
 # Optional: company/work-specific config that doesn't belong in this public
 # repo. Only runs if that sibling repo actually exists - a plain clone of
