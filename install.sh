@@ -72,8 +72,11 @@ if command -v brew >/dev/null 2>&1; then
   brew trust --formula tursodatabase/tap/turso
   brew trust --formula libsql/sqld/sqld
 
+  # --no-upgrade: install what is missing but leave installed packages alone,
+  # so re-running this script never upgrades anything. Upgrade on purpose with
+  # `brew upgrade`.
   echo "Installing Homebrew packages..."
-  brew bundle --file="$DOTFILES_DIR/Brewfile"
+  brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile"
 else
   echo "Homebrew not found; skipping Brewfile (https://brew.sh)."
 fi
