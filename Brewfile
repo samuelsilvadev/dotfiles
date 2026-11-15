@@ -96,6 +96,7 @@ brew "postgresql@18"
 cask "ghostty", args: { adopt: true }
 cask "aerospace"
 cask "cursor", args: { adopt: true }
+cask "t3-code", args: { adopt: true }   # the app writes the `t3` CLI to ~/.local/bin on first launch
 cask "font-fira-code-nerd-font"   # icons for starship/eza/lazygit (ghostty/config)
 cask "gcloud-cli"    # path/completion sourced in zshrc
 cask "orbstack"      # docker/linux VMs (zprofile sources its shell init)
