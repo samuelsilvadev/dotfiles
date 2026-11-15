@@ -63,6 +63,7 @@ brew "ffmpeg"
 brew "bun"           # BUN_INSTALL=~/.bun still holds global packages (zshrc)
 brew "uv"
 brew "opencode"
+brew "herdr"         # agent multiplexer; herdr/config.toml is linked by install.sh
 
 # ---------- Third-party taps (trusted in install.sh) ----------
 brew "danerwilliams/tap/charcoal"

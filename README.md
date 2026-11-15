@@ -18,6 +18,8 @@ dotfiles/
 │   └── aerospace.toml
 ├── mise/
 │   └── config.toml
+├── herdr/
+│   └── config.toml
 ├── scripts/
 │   ├── check           (static checks; the pre-commit hook runs it)
 │   └── doctor          (checks this machine against the repo)

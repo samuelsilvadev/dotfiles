@@ -18,6 +18,7 @@ SOURCES=(
   "claude/skills"
   "ghostty"
   "mise/config.toml"
+  "herdr/config.toml"
 )
 
 # corresponding $HOME targets, same order as SOURCES
@@ -32,6 +33,7 @@ TARGETS=(
   "$HOME/.agents/skills"   # same skills, for Codex (and other agents that read ~/.agents)
   "$HOME/.config/ghostty"
   "$HOME/.config/mise/config.toml"
+  "$HOME/.config/herdr/config.toml"   # only the config; the rest of that dir is runtime state
 )
 
 for i in "${!SOURCES[@]}"; do
