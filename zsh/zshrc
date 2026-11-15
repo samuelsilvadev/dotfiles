@@ -71,11 +71,15 @@ alias pn="pnpm"
 alias gpcb="git branch --show-current"
 
 # eza (modern ls) + bat (modern cat). --hyperlink makes filenames cmd-clickable.
-alias ls="eza --group-directories-first --icons=auto --hyperlink=auto"
-alias ll="eza -l --group-directories-first --icons=auto --git --hyperlink=auto"
-alias la="eza -la --group-directories-first --icons=auto --git --hyperlink=auto"
-alias lt="eza --tree --level=2 --icons=auto --hyperlink=auto"
-alias cat="bat"
+# Skipped inside Claude Code, which sets CLAUDECODE=1: its shells need plain
+# ls/cat so flags like `ls -leO@` and piped `cat` behave as scripts expect.
+if [[ -z $CLAUDECODE ]]; then
+  alias ls="eza --group-directories-first --icons=auto --hyperlink=auto"
+  alias ll="eza -l --group-directories-first --icons=auto --git --hyperlink=auto"
+  alias la="eza -la --group-directories-first --icons=auto --git --hyperlink=auto"
+  alias lt="eza --tree --level=2 --icons=auto --hyperlink=auto"
+  alias cat="bat"
+fi
 
 # quick opener: `c file[:line]` opens Cursor at that spot from the terminal
 c() { cursor --goto "$@" 2>/dev/null || cursor "$@"; }

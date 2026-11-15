@@ -52,7 +52,7 @@ done <<< "$sources"
 #    by the Brewfile or tool-versions, so a fresh clone does not break.
 provided="$( { sed -nE 's/^(brew|cask) "([^"]+)".*/\2/p' Brewfile | sed 's|.*/||'
                awk '{print $1}' tool-versions; } | sort -u )"
-used="$( { sed -nE 's/^alias [A-Za-z0-9_]+="([A-Za-z0-9_-]+).*/\1/p' zsh/zshrc
+used="$( { sed -nE 's/^[[:space:]]*alias [A-Za-z0-9_]+="([A-Za-z0-9_-]+).*/\1/p' zsh/zshrc
            sed -nE 's/^eval "\$\(([A-Za-z0-9_-]+) .*/\1/p' zsh/zshrc
            sed -nE 's/^source <\(([A-Za-z0-9_-]+) .*/\1/p' zsh/zshrc; } | sort -u )"
 # pnpm ships from tool-versions (mise) under the same name. Anything else must match a Brewfile entry.
