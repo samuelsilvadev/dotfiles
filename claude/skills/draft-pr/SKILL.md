@@ -25,7 +25,8 @@ Arguments: $ARGUMENTS
 
 - Title: `type(TICKET): Summary` — conventional type, ticket in caps, summary starting with a capital letter (e.g. `feat(ENGA-5495): Confirm moving stages with an undo toast`). Without a ticket: `type: Summary`.
 - Read the user's latest PR body for layout: `gh pr list --author @me --state all --limit 1 --json body -q '.[0].body'`. Copy its style: short Context paragraphs (one idea each) opening with the Linear link, Solution bullets with nested sub-bullets explaining both what changed and why, a closing line on user-facing impact.
-- Build the body on the repo's `.github/pull_request_template.md`. `--body-file` skips the template, so copy every remaining section in verbatim: the HTML hint comments, `### Notes / Caveats` (stack position goes here when stacked), `---`, and the "Relevant docs for reviewer" links.
+- Build the body on the repo's `.github/pull_request_template.md`. `--body-file` skips the template, so copy every remaining section in verbatim: the HTML hint comments, `### Notes / Caveats`, `---`, and the "Relevant docs for reviewer" links.
+- Never write about the PR's place in the stack (e.g. "First PR of the stack. The frontend PR on top adds..."): GitHub's stack view already shows it.
 - No "Generated with Claude Code" footer or any other attribution line.
 - Write the body to a temp file: `BODY=$(mktemp -t pr-body).md`.
 
@@ -52,6 +53,16 @@ gh stack submit --auto
 gh pr edit <number> --title "<title>" --body-file "$BODY" --add-label <label>
 ```
 
-## 5. Report
+## 5. Assign and ping Greptile
+
+Assign the PR to the user, then comment `@greptileai` unless a comment with it already exists (re-runs and `gh pr edit` fix-ups must not post it twice):
+
+```bash
+gh pr edit <number> --add-assignee @me
+gh pr view <number> --json comments -q '.comments[].body' | grep -qF '@greptileai' \
+  || gh pr comment <number> --body '@greptileai'
+```
+
+## 6. Report
 
 Reply with the PR link and title, plus one line if you renamed the branch or skipped the label. Don't paste the description back; it's on the PR.

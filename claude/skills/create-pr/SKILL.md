@@ -60,6 +60,7 @@ Larger or more design-heavy PRs may swap in `## The change` / `## Decisions` / `
 
 ### Notes / Caveats
 - Two to four bullets: behaviour that stays unchanged, merge order against sibling PRs, rollout caveats, which open PRs will need a rebase, the follow-up ticket for a known gap. One line each.
+- Never a bullet on the PR's place in a stack or what the PRs above or below it do (e.g. "First PR of the stack. The frontend PR on top adds..."): GitHub's stack view already shows it.
 
 ### Hard rules for every body
 1. **300 words maximum by default**, counting everything the author writes and excluding the template footer. Count before `gh pr create` or `gh pr edit`. A deeper investigation means harder compression. If compressing to 300 makes the Context, the Solution or the reasoning behind a decision ambiguous, or drops something a reviewer needs, ask the user whether to allow up to 400 words and say briefly what would get lost. Never go past 300 without a yes, and never past 400.
@@ -77,7 +78,13 @@ Larger or more design-heavy PRs may swap in `## The change` / `## Decisions` / `
 
 1. Show the user the title, branch and full body in the terminal and wait for approval, even if told to "just open it". If the body needs more than 300 words (hard rule 1), ask for the 400-word allowance in the same message.
 2. `gh pr create --draft --repo <owner/name> --base master --head <branch> --title ... --body-file ...`. Always `--draft` (stacked PRs too) and always `--repo`: the shell cwd resets between calls, and a bare `gh` once overwrote an unrelated PR. Echo the resolved URL before any `gh ... edit`.
-3. Reply in chat with the link and only what needs a decision. Do not repeat the body.
+3. Assign the PR to the user and comment `@greptileai` unless a comment with it already exists:
+   ```bash
+   gh pr edit <number> --repo <owner/name> --add-assignee @me
+   gh pr view <number> --repo <owner/name> --json comments -q '.comments[].body' | grep -qF '@greptileai' \
+     || gh pr comment <number> --repo <owner/name> --body '@greptileai'
+   ```
+4. Reply in chat with the link and only what needs a decision. Do not repeat the body.
 
 ## 5. After opening: the review loop
 
@@ -88,6 +95,7 @@ Larger or more design-heavy PRs may swap in `## The change` / `## Decisions` / `
 ## 6. Pre-flight checklist
 
 - [ ] Draft, correct repo, correct base, correct branch
+- [ ] Assigned to the user, `@greptileai` comment posted once
 - [ ] Title sentence case, ticket prefix if any, no em dash
 - [ ] Body under 300 words (or 400 if the user approved), each fact once, no wrapping, no diff block, no spec-run mention
 - [ ] Context links the Linear ticket (if any) and the Sentry or PR trigger, with real numbers
