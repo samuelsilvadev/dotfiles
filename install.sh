@@ -54,6 +54,9 @@ done
 
 echo "Done."
 
+# Run scripts/check before every commit (tracked hooks live in .githooks).
+git -C "$DOTFILES_DIR" config core.hooksPath .githooks
+
 # Packages: system layer via Homebrew, language runtimes via mise.
 if command -v brew >/dev/null 2>&1; then
   # Third-party tap casks/formulae are ignored until trusted. Trust only what

@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Static checks for this repo. Runs as the pre-commit hook (.githooks/pre-commit).
+# Looks only at files in the repo, never at machine state; for that, run scripts/doctor.
+set -uo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$DOTFILES_DIR" || exit 1
+
+failures=0
+fail() { echo "FAIL: $*" >&2; failures=$((failures + 1)); }
+pass() { echo "ok:   $*"; }
+
+# 1. Syntax: every shell script parses.
+for f in install.sh scripts/check scripts/doctor .githooks/pre-commit; do
+  if err="$(bash -n "$f" 2>&1)"; then pass "bash -n $f"; else fail "bash -n $f"; echo "$err" >&2; fi
+done
+for f in zsh/zshrc zsh/zprofile; do
+  if err="$(zsh -n "$f" 2>&1)"; then pass "zsh -n $f"; else fail "zsh -n $f"; echo "$err" >&2; fi
+done
+
+# 2. shellcheck on the bash scripts, when installed (the Brewfile installs it).
+if command -v shellcheck >/dev/null 2>&1; then
+  if shellcheck install.sh scripts/check scripts/doctor .githooks/pre-commit; then pass "shellcheck"; else fail "shellcheck"; fi
+else
+  echo "skip: shellcheck not installed (brew bundle installs it)"
+fi
+
+# 3. install.sh: SOURCES and TARGETS are parallel arrays, so lengths must match
+#    and every source must exist in the repo.
+array_entries() { # prints the quoted entries of the named bash array in install.sh
+  awk -v name="$1" '
+    $0 ~ "^"name"=\\(" { inside=1; next }
+    inside && /^\)/    { inside=0 }
+    inside && /^[[:space:]]*"/ { sub(/^[[:space:]]*"/, ""); sub(/".*$/, ""); print }
+  ' install.sh
+}
+sources="$(array_entries SOURCES)"
+targets="$(array_entries TARGETS)"
+n_sources="$(printf '%s\n' "$sources" | grep -c .)"
+n_targets="$(printf '%s\n' "$targets" | grep -c .)"
+if [ "$n_sources" -eq "$n_targets" ] && [ "$n_sources" -gt 0 ]; then
+  pass "install.sh SOURCES/TARGETS both have $n_sources entries"
+else
+  fail "install.sh SOURCES has $n_sources entries but TARGETS has $n_targets"
+fi
+while IFS= read -r src; do
+  [ -z "$src" ] && continue
+  [ -e "$src" ] || fail "install.sh SOURCES entry does not exist in the repo: $src"
+done <<< "$sources"
+
+# 4. Every command zshrc wires up (aliases, eval/source init lines) is provided
+#    by the Brewfile or tool-versions, so a fresh clone does not break.
+provided="$( { sed -nE 's/^(brew|cask) "([^"]+)".*/\2/p' Brewfile | sed 's|.*/||'
+               awk '{print $1}' tool-versions; } | sort -u )"
+used="$( { sed -nE 's/^alias [A-Za-z0-9_]+="([A-Za-z0-9_-]+).*/\1/p' zsh/zshrc
+           sed -nE 's/^eval "\$\(([A-Za-z0-9_-]+) .*/\1/p' zsh/zshrc
+           sed -nE 's/^source <\(([A-Za-z0-9_-]+) .*/\1/p' zsh/zshrc; } | sort -u )"
+# pnpm ships from tool-versions (mise) under the same name. Anything else must match a Brewfile entry.
+missing_cmds=""
+for cmd in $used; do
+  printf '%s\n' "$provided" | grep -qx "$cmd" || missing_cmds="$missing_cmds $cmd"
+done
+if [ -z "$missing_cmds" ]; then
+  pass "every command zsh/zshrc wires up is in Brewfile or tool-versions"
+else
+  fail "zsh/zshrc uses commands no Brewfile/tool-versions entry provides:$missing_cmds"
+fi
+
+if [ "$failures" -gt 0 ]; then
+  echo "$failures check(s) failed." >&2
+  exit 1
+fi
+echo "All checks passed."

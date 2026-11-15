@@ -21,6 +21,7 @@ brew "atuin"         # shell history, ctrl-r
 brew "ripgrep"       # rg (see RIPGREP_CONFIG_PATH)
 brew "fd"
 brew "jq"
+brew "shellcheck"   # scripts/check lints install.sh with it
 brew "lazygit"
 brew "lazydocker"
 brew "derailed/k9s/k9s"   # kubernetes TUI (third-party tap, trusted in install.sh)

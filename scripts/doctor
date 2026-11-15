@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Checks this machine against the repo: are the Brewfile and tool-versions
+# actually installed, and does a fresh login shell resolve each tool to the
+# right place? Not a pre-commit check (it reads machine state); run it on demand.
+set -uo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+failures=0
+fail() { echo "FAIL: $*" >&2; failures=$((failures + 1)); }
+pass() { echo "ok:   $*"; }
+
+# 1. Brewfile satisfied. --no-upgrade: an available upgrade is not a failure.
+if command -v brew >/dev/null 2>&1; then
+  if brew bundle check --no-upgrade --file="$DOTFILES_DIR/Brewfile" >/dev/null 2>&1; then
+    pass "brew bundle check"
+  else
+    fail "Brewfile not satisfied; run: brew bundle --file=Brewfile"
+    brew bundle check --no-upgrade --verbose --file="$DOTFILES_DIR/Brewfile" 2>&1 | grep '^→' >&2
+  fi
+else
+  fail "brew not installed"
+fi
+
+# 2. Every tool in tool-versions is installed in mise.
+if command -v mise >/dev/null 2>&1; then
+  missing="$(mise ls --missing 2>/dev/null)"
+  if [ -z "$missing" ]; then pass "mise: no missing tools"; else fail "mise has missing tools; run: mise install"; echo "$missing" >&2; fi
+else
+  fail "mise not installed"
+fi
+
+# 3. Symlinks from install.sh point into the repo.
+for link in "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.gitconfig" "$HOME/.tool-versions" "$HOME/.config/mise/config.toml"; do
+  target="$(readlink "$link" 2>/dev/null || true)"
+  case "$target" in
+    "$DOTFILES_DIR"/*) pass "$link -> repo" ;;
+    *) fail "$link is not a symlink into the repo (run ./install.sh)" ;;
+  esac
+done
+
+# 4. Fresh login shell, empty environment, so inherited PATH cannot hide a problem.
+#    Runtimes must resolve under mise; brew tools under the Homebrew prefix.
+# The script below is meant to expand inside the fresh zsh, not here.
+# shellcheck disable=SC2016
+probe="$(env -i HOME="$HOME" USER="$USER" TERM=xterm-256color zsh -lic '
+  for t in node ruby python go yarn pnpm; do printf "%s %s\n" "$t" "$(whence -p $t)"; done
+  for t in git starship eza bat fzf zoxide atuin rg lazygit lazydocker k9s mise; do printf "%s %s\n" "$t" "$(whence -p $t)"; done
+' 2>/dev/null)"
+while read -r tool path; do
+  [ -z "$tool" ] && continue
+  case "$tool" in
+    node|ruby|python|go|yarn|pnpm) want="/mise/" ;;
+    *) want="/homebrew/" ;;
+  esac
+  case "$path" in
+    *"$want"*) pass "$tool -> $path" ;;
+    "") fail "$tool not found in a fresh login shell" ;;
+    *) fail "$tool resolves to $path (expected a path containing $want)" ;;
+  esac
+done <<< "$probe"
+
+if [ "$failures" -gt 0 ]; then
+  echo "$failures check(s) failed." >&2
+  exit 1
+fi
+echo "Machine matches the repo."

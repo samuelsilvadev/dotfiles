@@ -16,7 +16,13 @@ dotfiles/
 │   └── skills/         (linked to ~/.claude/skills and ~/.agents/skills; see skills/CREDITS.md)
 ├── aerospace/
 │   └── aerospace.toml
-├── tool-versions
+├── mise/
+│   └── config.toml
+├── scripts/
+│   ├── check           (static checks; the pre-commit hook runs it)
+│   └── doctor          (checks this machine against the repo)
+├── Brewfile            (system tools and apps, via Homebrew)
+├── tool-versions       (language runtimes, via mise)
 └── install.sh
 ```
 
@@ -28,7 +34,7 @@ cd ~/projects/projects/dotfiles
 ./install.sh
 ```
 
-`install.sh` symlinks each file into place under `$HOME`. If something already exists there and isn't already a symlink, it's backed up first (`<file>.backup.<timestamp>`) rather than overwritten.
+`install.sh` symlinks each file into place under `$HOME`, runs `brew bundle` for the `Brewfile`, then `mise install` for `tool-versions`, and enables the pre-commit hook. If something already exists there and isn't already a symlink, it's backed up first (`<file>.backup.<timestamp>`) rather than overwritten.
 
 If `../dotfiles-private` exists next to this repo, `install.sh` runs its `install.sh` too, at the end. That repo is private/company-specific config (not published here) — see [dotfiles-private](https://github.com/<you>/dotfiles-private). Cloning just this repo works fine without it.
 
@@ -54,3 +60,8 @@ for the full list and links to the originals.
 ## Notes
 
 - Secrets (npm auth tokens, API keys, etc.) are never committed here — those stay local only.
+
+## Checks
+
+- `scripts/check` runs before every commit: syntax and shellcheck, `SOURCES`/`TARGETS` stay in step, and every command `zshrc` wires up is provided by the `Brewfile` or `tool-versions`.
+- `scripts/doctor` compares this machine with the repo: Brewfile satisfied, mise tools installed, symlinks in place, and a fresh login shell resolving each tool correctly.
