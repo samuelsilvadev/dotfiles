@@ -71,10 +71,10 @@ alias pn="pnpm"
 alias gpcb="git branch --show-current"
 
 # eza (modern ls) + bat (modern cat). --hyperlink makes filenames cmd-clickable.
-alias ls="eza --group-directories-first --icons=auto --hyperlink"
-alias ll="eza -l --group-directories-first --icons=auto --git --hyperlink"
-alias la="eza -la --group-directories-first --icons=auto --git --hyperlink"
-alias lt="eza --tree --level=2 --icons=auto --hyperlink"
+alias ls="eza --group-directories-first --icons=auto --hyperlink=auto"
+alias ll="eza -l --group-directories-first --icons=auto --git --hyperlink=auto"
+alias la="eza -la --group-directories-first --icons=auto --git --hyperlink=auto"
+alias lt="eza --tree --level=2 --icons=auto --hyperlink=auto"
 alias cat="bat"
 
 # quick opener: `c file[:line]` opens Cursor at that spot from the terminal
