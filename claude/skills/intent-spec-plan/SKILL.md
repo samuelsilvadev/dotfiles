@@ -39,7 +39,7 @@ Use this when the ticket already exists (often written by a PM) and the user giv
    * **Conflicts:** statements that contradict each other or the code, with the file or query that shows it.
    * **Questions for the author:** only the ones you can't answer from the code or data, phrased so the author can answer in one line.
    * **Good to go:** what is already solid, briefly, so the author knows what not to rework.
-4. **Then offer, don't impose:** a draft comment for the author with the questions (shown first, with the disclaimer), or a restructured description in this format. The restructure keeps the author's text byte for byte where it stays, marks what you added, and is only applied with the user's approval. Never delete the author's content. Move it under the right heading instead.
+4. **Then offer, don't impose:** a draft comment for the author with the questions (shown first), or a restructured description in this format. The restructure keeps the author's text byte for byte where it stays, marks what you added, and is only applied with the user's approval. Never delete the author's content. Move it under the right heading instead.
 5. Once the gaps are resolved and recorded, continue with stage 2.
 
 ## Ground rules
@@ -51,7 +51,7 @@ Use this when the ticket already exists (often written by a PM) and the user giv
   * Linear: when a read is too big and gets saved to a file, search that file (`grep`, or `python3 -I` for JSON). Repeating the call overflows again.
 * **Every decision is written down before the turn ends.** Product decisions go on the ticket, implementation decisions on the plan (see "Where decisions live"). If the user declines to record something, respect that.
 * **Writing style:** plain headline plus sub-bullets, short sentences, the same term for the same thing throughout. Code and file references only on a trailing `Where:` line. One issue ID per line (Linear renders IDs as full-title chips). Dependencies by step number. Sizes as XS (hours), S (a day), M (2 to 3 days), L (1 to 2 weeks), XL (more), never eng-weeks. No em dashes.
-* **Disclaimer:** start every Claude-written description, document and comment with `> Written by Claude, reviewed by <name>.` (or `pending <name>'s review` for a plan not yet approved).
+* **Start with the work:** descriptions, documents and comments open with the problem, scope or question. Omit AI authorship/review disclaimers and redundant process introductions about the parent ticket, attached plan, one-PR intent or where decisions live. Use Linear's parent/document links for those relationships; keep substantive scope, dependencies, decisions and acceptance criteria in the body.
 
 ## Stage 1: the ticket
 
@@ -60,8 +60,6 @@ Use this when the ticket already exists (often written by a PM) and the user giv
 3. Draft the description with this template and show it:
 
 ```markdown
-> Written by Claude, reviewed by <name>. The build plan is in the attached document.
-
 ## Intent
 
 ### Problem
@@ -100,8 +98,6 @@ Intent is what a product owner reviews. Spec is what an engineer builds from and
 Create it with `save_document` and `issue: <ID>` so it's attached to the ticket. Title: `Plan: <short name>`. Template:
 
 ```markdown
-> Written by Claude, pending <name>'s review. The intent, spec and product decisions live on the issue; this document covers how we build it.
-
 ## Sub-issues
 (filled in after approval, one ID per line)
 
@@ -125,7 +121,6 @@ Create it with `save_document` and `issue: <ID>` so it's attached to the ticket.
 * Riskiest step first. For each: what could go wrong, and how it's contained (ordering, scoping, a check before a write, a spec).
 
 ## Planning decisions
-Proposed by Claude, pending approval:
 * Implementation choices the user hasn't made yet.
 
 ## Open questions
@@ -141,12 +136,10 @@ Each step is one PR or one manual task, mergeable on its own (one PR per need). 
 
 Only after the user approves the plan:
 
-1. Update the plan header to `approved by <name> on <date>` and the planning decisions line to `approved with the plan on <date>`.
+1. Record the user's approval and date under the plan's "Planning decisions".
 2. Create one sub-issue per step with `parentId`, the same team, assignee and cycle, and `blockedBy` from "Order". Template:
 
 ```markdown
-> Written by Claude. Step N of the plan attached to <PARENT-ID>.
-
 * Two to four bullets on what this step delivers.
 
 ### Done when
