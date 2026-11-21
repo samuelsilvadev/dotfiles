@@ -16,14 +16,6 @@
     "slack@claude-plugins-official": true,
     "figma@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "plannotator": {
-      "source": {
-        "source": "github",
-        "repo": "backnotprop/plannotator"
-      }
-    }
-  },
   "effortLevel": "low",
   "theme": "light",
   "voiceEnabled": false,
