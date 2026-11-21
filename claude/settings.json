@@ -1,16 +1,16 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "Bash(git mv:*)",
       "Bash(npx jest:*)"
     ]
   },
-  "model": "fable[1m]",
+  "model": "sonnet",
   "hooks": {},
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
   "enabledPlugins": {
     "ruby-lsp@claude-plugins-official": true,
     "slack@claude-plugins-official": true,
